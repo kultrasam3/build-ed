@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BED Website - Cool Animation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Roboto:700');
+
+    html {
+      height: 100%;
+      background-color: #f8f8f8;
+    }
+
+    body {
+      overflow: hidden;
+      height: 100%;
+      width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      font-family: 'Roboto', sans-serif;
+      color: #555555;
+      text-align: center;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    $menu_WIDTH: 150px;
+
+    /* Dropdown Menu Styles */
+    .menu {
+      display: block;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .menu-title {
+      display: block;
+      width: $menu_WIDTH;
+      height: 40px;
+      padding: 12px 0 0;
+      background: #9dc852;
+      text-align: center;
+      color: #ffffff;
+      font-weight: bold;
+      text-transform: uppercase;
+      transition: 0.3s background-color;
+    }
+
+    .menu-title:before {
+      content: "";
+      display: block;
+      height: 0;
+      border-top: 5px solid #9dc852;
+      border-left: ($menu_WIDTH / 2) solid transparent;
+      border-right: ($menu_WIDTH / 2) solid transparent;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 101;
+      transition:
+        0.2s 0.2s border-top ease-out,
+        0.3s border-top-color;
+    }
+
+    .menu-title:hover { background: #8db842; }
+    .menu-title:hover:before { border-top-color: #8db842; }
+
+    .menu-dropdown {
+      min-width: 100%;
+      padding: 15px 0;
+      position: absolute;
+      background: #ebebeb;
+      z-index: 100;
+      transition:
+        0.5s padding,
+        0.5s background;
+    }
+
+    .menu-dropdown:after {
+      content: "";
+      display: block;
+      height: 0;
+      border-top: 5px solid #ebebeb;
+      border-left: ($menu_WIDTH / 2) solid transparent;
+      border-right: ($menu_WIDTH / 2) solid transparent;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 101;
+      transition: 0.5s border-top;
+    }
+
+    .menu:hover > .menu-title:after {
+      border-bottom-width: 5px;
+      transition: 0.2s 0.2s border-bottom-width ease-out;
+    }
+
+    .menu-dropdown > * {
+      overflow: hidden;
+      height: 30px;
+      padding: 5px 10px;
+      background: rgba(0,0,0,0);
+      white-space: nowrap;
+      transition: 
+        0.5s height cubic-bezier(.73,.32,.34,1.5),
+        0.5s padding cubic-bezier(.73,.32,.34,1.5),
+        0.5s margin cubic-bezier(.73,.32,.34,1.5),
+        0.5s 0.2s color,
+        0.2s background-color;
+    }
+
+    .menu-dropdown > *:hover {
+      background: rgba(0,0,0,0.1);
+    }
+
+    .menu:not(:hover) > .menu-dropdown > * {
+      visibility: hidden;
+      height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      margin: 0;
+      color: rgba(25,25,25,0);
+      transition: 
+        0.5s 0.1s height,
+        0.5s 0.1s padding,
+        0.5s 0.1s margin,
+        0.3s color,
+        0.6s visibility;
+      z-index: 99;
+    }
+
+    .hList {
+      overflow: hidden;
+    }
+
+    .hList > * {
+      float: left;
+    }
+
+    .hList > * + * {
+      margin-left: 0;
+    }
+
+    /* Flip Animation */
+    #container {
+      color: #999;
+      text-transform: uppercase;
+      font-size: 36px;
+      font-weight: bold;
+      padding-top: 200px;
+      position: fixed;
+      width: 100%;
+      bottom: 45%;
+      display: block;
+    }
+
+    #flip {
+      height: 50px;
+      overflow: hidden;
+    }
+
+    #flip > div > div {
+      color: #fff;
+      padding: 4px 12px;
+      height: 45px;
+      margin-bottom: 45px;
+      display: inline-block;
+    }
+
+    #flip div:first-child {
+      animation: show 5s linear infinite;
+    }
+
+    #flip div div {
+      background: #42c58a;
+    }
+
+    #flip div:first-child div {
+      background: #4ec7f3;
+    }
+
+    #flip div:last-child div {
+      background: #DC143C;
+    }
+
+    @keyframes show {
+      0% {margin-top: -270px;}
+      5% {margin-top: -180px;}
+      33% {margin-top: -180px;}
+      38% {margin-top: -90px;}
+      66% {margin-top: -90px;}
+      71% {margin-top: 0px;}
+      99.99% {margin-top: 0px;}
+      100% {margin-top: -270px;}
+    }
+
+    p {
+      position: fixed;
+      width: 100%;
+      bottom: 30px;
+      font-size: 12px;
+      color: #999;
+      margin-top: 200px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Dropdown Menu -->
+  <ul class="hList">
+    <li>
+      <a href="#click" class="menu">
+        <h2 class="menu-title">Animals</h2>
+        <ul class="menu-dropdown">
+          <li>Cat</li>
+          <li>Dog</li>
+          <li>Horse</li>
+          <li>Cow</li>
+          <li>Pig</li>
+        </ul>
+      </a>
+    </li>
+    <li>
+      <a href="#click" class="menu">
+        <h2 class="menu-title">Names</h2>
+        <ul class="menu-dropdown">
+          <li>Kevin</li>
+          <li>Jim</li>
+          <li>Andy</li>
+        </ul>
+      </a>
+    </li>
+    <li>
+      <a href="#click" class="menu">
+        <h2 class="menu-title">Things</h2>
+        <ul class="menu-dropdown">
+          <li>Bench</li>
+          <li>Pizza</li>
+          <li>Honda CB125</li>
+          <li>Space</li>
+          <li>Black Matter</li>
+          <li>Apple</li>
+          <li>Philodendron</li>
+          <li>Liver</li>
+          <li>Brass</li>
+        </ul>
+      </a>
+    </li>
+    <li>
+      <a href="#click" class="menu">
+        <h2 class="menu-title">Movies</h2>
+        <ul class="menu-dropdown">
+          <li>Godzilla</li>
+          <li>Man on Wire</li>
+          <li>Spirited Away</li>
+          <li>Interstellar</li>
+        </ul>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Flip Animation -->
+  <div id="container">
+    Make 
+    <div id="flip">
+      <div><div>Work</div></div>
+      <div><div>LifeStyle</div></div>
+      <div><div>Everything</div></div>
+    </div>
+    Awesome!
+  </div>
+
+  <p>&copy; BED Website 2025</p>
+</body>
+</html>
