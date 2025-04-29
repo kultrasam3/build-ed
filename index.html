@@ -1,282 +1,758 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BED Website - Cool Animation</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css?family=Roboto:700');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BED - Build an Ethical Driver</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #111827;
+            background-image:
+                linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.95) 100%),
+                radial-gradient(circle, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: cover, 20px 20px;
+            color: #d1d5db;
+            overflow-x: hidden;
+        }
 
-    html {
-      height: 100%;
-      background-color: #f8f8f8;
-    }
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55), transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
 
-    body {
-      overflow: hidden;
-      height: 100%;
-      width: 600px;
-      margin: 0 auto;
-      background-color: #ffffff;
-      font-family: 'Roboto', sans-serif;
-      color: #555555;
-      text-align: center;
-    }
+        .fade-in-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
 
-    * {
-      box-sizing: border-box;
-    }
+        .scale-in.is-visible {
+            opacity: 1;
+            transform: scale(1);
+        }
 
-    $menu_WIDTH: 150px;
+        .delay-100 {
+            transition-delay: 0.1s;
+        }
 
-    /* Dropdown Menu Styles */
-    .menu {
-      display: block;
-      position: relative;
-      cursor: pointer;
-    }
+        .delay-200 {
+            transition-delay: 0.2s;
+        }
 
-    .menu-title {
-      display: block;
-      width: $menu_WIDTH;
-      height: 40px;
-      padding: 12px 0 0;
-      background: #9dc852;
-      text-align: center;
-      color: #ffffff;
-      font-weight: bold;
-      text-transform: uppercase;
-      transition: 0.3s background-color;
-    }
+        .delay-300 {
+            transition-delay: 0.3s;
+        }
 
-    .menu-title:before {
-      content: "";
-      display: block;
-      height: 0;
-      border-top: 5px solid #9dc852;
-      border-left: ($menu_WIDTH / 2) solid transparent;
-      border-right: ($menu_WIDTH / 2) solid transparent;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      z-index: 101;
-      transition:
-        0.2s 0.2s border-top ease-out,
-        0.3s border-top-color;
-    }
+        .delay-400 {
+            transition-delay: 0.4s;
+        }
 
-    .menu-title:hover { background: #8db842; }
-    .menu-title:hover:before { border-top-color: #8db842; }
+        .delay-500 {
+            transition-delay: 0.5s;
+        }
 
-    .menu-dropdown {
-      min-width: 100%;
-      padding: 15px 0;
-      position: absolute;
-      background: #ebebeb;
-      z-index: 100;
-      transition:
-        0.5s padding,
-        0.5s background;
-    }
+        #main-header {
+            transition: background-color 0.4s ease, box-shadow 0.4s ease;
+            background-color: rgba(17, 24, 39, 0.8);
+            border-bottom: 1px solid rgba(55, 65, 81, 0.5);
+        }
 
-    .menu-dropdown:after {
-      content: "";
-      display: block;
-      height: 0;
-      border-top: 5px solid #ebebeb;
-      border-left: ($menu_WIDTH / 2) solid transparent;
-      border-right: ($menu_WIDTH / 2) solid transparent;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      z-index: 101;
-      transition: 0.5s border-top;
-    }
+        #main-header.scrolled {
+            background-color: rgba(17, 24, 39, 0.95);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
 
-    .menu:hover > .menu-title:after {
-      border-bottom-width: 5px;
-      transition: 0.2s 0.2s border-bottom-width ease-out;
-    }
+        #logo-main {
+            color: #ec4899;
+        }
 
-    .menu-dropdown > * {
-      overflow: hidden;
-      height: 30px;
-      padding: 5px 10px;
-      background: rgba(0,0,0,0);
-      white-space: nowrap;
-      transition: 
-        0.5s height cubic-bezier(.73,.32,.34,1.5),
-        0.5s padding cubic-bezier(.73,.32,.34,1.5),
-        0.5s margin cubic-bezier(.73,.32,.34,1.5),
-        0.5s 0.2s color,
-        0.2s background-color;
-    }
+        #logo-secondary {
+            color: #f3f4f6;
+        }
 
-    .menu-dropdown > *:hover {
-      background: rgba(0,0,0,0.1);
-    }
+        .nav-link {
+            position: relative;
+            padding-bottom: 4px;
+            color: #d1d5db;
+        }
 
-    .menu:not(:hover) > .menu-dropdown > * {
-      visibility: hidden;
-      height: 0;
-      padding-top: 0;
-      padding-bottom: 0;
-      margin: 0;
-      color: rgba(25,25,25,0);
-      transition: 
-        0.5s 0.1s height,
-        0.5s 0.1s padding,
-        0.5s 0.1s margin,
-        0.3s color,
-        0.6s visibility;
-      z-index: 99;
-    }
+        .nav-link:hover {
+            color: #f9a8d4;
+        }
 
-    .hList {
-      overflow: hidden;
-    }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ec4899;
+            transition: width 0.3s ease;
+        }
 
-    .hList > * {
-      float: left;
-    }
+        .nav-link:hover::after {
+            width: 100%;
+        }
 
-    .hList > * + * {
-      margin-left: 0;
-    }
+        #mobile-menu {
+            background-color: rgba(31, 41, 55, 0.98);
+            border-top-color: rgba(55, 65, 81, 0.5);
+        }
 
-    /* Flip Animation */
-    #container {
-      color: #999;
-      text-transform: uppercase;
-      font-size: 36px;
-      font-weight: bold;
-      padding-top: 200px;
-      position: fixed;
-      width: 100%;
-      bottom: 45%;
-      display: block;
-    }
+        #mobile-menu a {
+            color: #d1d5db;
+        }
 
-    #flip {
-      height: 50px;
-      overflow: hidden;
-    }
+        #mobile-menu a:hover {
+            color: #f9a8d4;
+        }
 
-    #flip > div > div {
-      color: #fff;
-      padding: 4px 12px;
-      height: 45px;
-      margin-bottom: 45px;
-      display: inline-block;
-    }
+        #mobile-menu-button svg {
+            color: #d1d5db;
+        }
 
-    #flip div:first-child {
-      animation: show 5s linear infinite;
-    }
+        #hero-section {
+            background: linear-gradient(-45deg, #831843, #be185d, #500724, #be185d);
+            background-size: 400% 400%;
+            animation: gradientBG 18s ease infinite;
+            background-attachment: fixed;
+            color: #f9fafb;
+        }
 
-    #flip div div {
-      background: #42c58a;
-    }
+        #hero-section h1 {
+            color: #fff;
+        }
 
-    #flip div:first-child div {
-      background: #4ec7f3;
-    }
+        #hero-section p {
+            color: #f3f4f6;
+        }
 
-    #flip div:last-child div {
-      background: #DC143C;
-    }
+        #hero-section .text-pink-accent {
+            color: #f9a8d4;
+        }
 
-    @keyframes show {
-      0% {margin-top: -270px;}
-      5% {margin-top: -180px;}
-      33% {margin-top: -180px;}
-      38% {margin-top: -90px;}
-      66% {margin-top: -90px;}
-      71% {margin-top: 0px;}
-      99.99% {margin-top: 0px;}
-      100% {margin-top: -270px;}
-    }
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
 
-    p {
-      position: fixed;
-      width: 100%;
-      bottom: 30px;
-      font-size: 12px;
-      color: #999;
-      margin-top: 200px;
-    }
-  </style>
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .feature-card {
+            background-color: rgba(31, 41, 55, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(55, 65, 81, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px -5px rgba(236, 72, 153, 0.1), 0 8px 10px -6px rgba(236, 72, 153, 0.1);
+            border-color: rgba(236, 72, 153, 0.4);
+        }
+
+        .feature-card h3 {
+            color: #f3f4f6;
+        }
+
+        .feature-card p {
+            color: #9ca3af;
+        }
+
+        .feature-card .icon-container {
+            color: #ec4899;
+        }
+
+        .feature-card:hover svg {
+            transform: scale(1.1) rotate(5deg);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card svg {
+            transition: transform 0.3s ease;
+        }
+
+        .cta-button {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: transform 0.2s ease, box-shadow 0.3s ease, background-position 0.5s ease;
+            background-size: 200% auto;
+            border: none;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(236, 72, 153, 0.2);
+            background-position: right center;
+        }
+
+        .cta-button-primary {
+            background-image: linear-gradient(to right, #ec4899 0%, #be185d 51%, #ec4899 100%);
+            color: #fff;
+        }
+
+        .cta-button-secondary {
+            background-image: linear-gradient(to right, #fce7f3 0%, #fdf2f8 51%, #fce7f3 100%);
+            color: #be185d;
+        }
+
+        .cta-button-secondary:hover {
+            color: #831843;
+        }
+
+        #how-it-works .step-icon-wrapper {
+            background-image: linear-gradient(to bottom right, #be185d, #ec4899);
+            color: white;
+        }
+
+        #how-it-works h3 {
+            color: #f3f4f6;
+        }
+
+        #how-it-works p {
+            color: #9ca3af;
+        }
+
+        #connector-line {
+            background-color: #be185d;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 1s ease-out;
+            z-index: 0;
+        }
+
+        #connector-line.is-visible {
+            transform: scaleX(1);
+        }
+
+        .step-icon {
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .step-icon.is-visible {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .counter-value {
+            font-weight: 900;
+            color: #f9a8d4;
+        }
+
+        #stats span:last-child {
+            color: #9ca3af;
+        }
+
+        .section-title {
+            color: #f9fafb;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: #ec4899;
+            margin: 10px auto 0;
+            border-radius: 2px;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .section-title.is-visible::after {
+            transform: scaleX(1);
+        }
+
+        .section-intro-text {
+            color: #d1d5db;
+        }
+
+        #importance .graphic-box {
+            background-image: linear-gradient(to bottom right, #831843, #be185d);
+        }
+
+        #importance .graphic-box span {
+            color: white;
+        }
+
+        #importance .graphic-box p {
+            color: #fbcfe8;
+        }
+
+        #importance ul {
+            color: #d1d5db;
+        }
+
+        #importance svg {
+            color: #a2e690;
+        }
+
+        #contact {
+            background-image: linear-gradient(to right, #831843, #500724);
+            color: #f9fafb;
+        }
+
+        #contact h2 {
+            color: #fff;
+        }
+
+        #contact p {
+            color: #fce7f3;
+        }
+
+        footer {
+            background-color: #030712;
+            color: #6b7280;
+            border-top: 1px solid #374151;
+        }
+
+        footer a#footer-logo-main {
+            color: #ec4899;
+        }
+
+        footer a#footer-logo-secondary {
+            color: #d1d5db;
+        }
+
+        footer .nav-link {
+            color: #9ca3af;
+        }
+
+        footer .nav-link:hover {
+            color: #f9a8d4;
+        }
+
+        footer .nav-link::after {
+            background-color: #ec4899;
+        }
+
+        footer .copyright-text {
+            color: #6b7280;
+        }
+
+        footer .tagline-text {
+            color: #4b5563;
+        }
+
+        .marquee-container {
+            background-color: rgba(236, 72, 153, 0.1);
+            padding: 1rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+            border-top: 1px solid rgba(236, 72, 153, 0.2);
+            border-bottom: 1px solid rgba(236, 72, 153, 0.2);
+        }
+
+        .marquee-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 30s linear infinite;
+            color: #f9a8d4;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .marquee-content span {
+            margin-right: 50px;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .dark-section-bg {
+            background-color: rgba(31, 41, 55, 0.5);
+            backdrop-filter: blur(8px);
+            border-radius: 1rem;
+            padding-top: 6rem;
+            padding-bottom: 6rem;
+            margin-bottom: 2rem;
+        }
+
+        #about,
+        #stats,
+        #how-it-works {
+            background-color: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(55, 65, 81, 0.2);
+        }
+
+        #importance {
+            background-image: linear-gradient(to bottom right, rgba(55, 65, 81, 0.6), rgba(31, 41, 55, 0.7));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(55, 65, 81, 0.2);
+        }
+    </style>
 </head>
-<body>
-  <!-- Dropdown Menu -->
-  <ul class="hList">
-    <li>
-      <a href="#click" class="menu">
-        <h2 class="menu-title">Animals</h2>
-        <ul class="menu-dropdown">
-          <li>Cat</li>
-          <li>Dog</li>
-          <li>Horse</li>
-          <li>Cow</li>
-          <li>Pig</li>
-        </ul>
-      </a>
-    </li>
-    <li>
-      <a href="#click" class="menu">
-        <h2 class="menu-title">Names</h2>
-        <ul class="menu-dropdown">
-          <li>Kevin</li>
-          <li>Jim</li>
-          <li>Andy</li>
-        </ul>
-      </a>
-    </li>
-    <li>
-      <a href="#click" class="menu">
-        <h2 class="menu-title">Things</h2>
-        <ul class="menu-dropdown">
-          <li>Bench</li>
-          <li>Pizza</li>
-          <li>Honda CB125</li>
-          <li>Space</li>
-          <li>Black Matter</li>
-          <li>Apple</li>
-          <li>Philodendron</li>
-          <li>Liver</li>
-          <li>Brass</li>
-        </ul>
-      </a>
-    </li>
-    <li>
-      <a href="#click" class="menu">
-        <h2 class="menu-title">Movies</h2>
-        <ul class="menu-dropdown">
-          <li>Godzilla</li>
-          <li>Man on Wire</li>
-          <li>Spirited Away</li>
-          <li>Interstellar</li>
-        </ul>
-      </a>
-    </li>
-  </ul>
 
-  <!-- Flip Animation -->
-  <div id="container">
-    Make 
-    <div id="flip">
-      <div><div>Work</div></div>
-      <div><div>LifeStyle</div></div>
-      <div><div>Everything</div></div>
+<body class="antialiased">
+
+    <div class="marquee-container">
+        <div class="marquee-content">
+            <span>Build an Ethical Driver</span>
+            <span>Virtual Road Rage Test</span>
+            <span>Preparing for Your License</span>
+            <span>Responsible Driving</span>
+            <span>Handling Road Rage</span>
+            <span>Ethical Driving Habits</span>
+            <span>Test Before You Drive</span>
+            <span>Safer Roads Start Here</span>
+        </div>
     </div>
-    Awesome!
-  </div>
 
-  <p>&copy; BED Website 2025</p>
+    <header id="main-header" class="backdrop-blur-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-3xl font-bold tracking-tight">
+                <span id="logo-main">BED</span><span id="logo-secondary">Test</span>
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#about" class="nav-link transition duration-200 font-medium">About</a>
+                <a href="#importance" class="nav-link transition duration-200 font-medium">Importance</a>
+                <a href="#stats" class="nav-link transition duration-200 font-medium">Stats</a>
+                <a href="#how-it-works" class="nav-link transition duration-200 font-medium">How It Works</a>
+                <a href="#contact" class="cta-button cta-button-primary text-white font-semibold py-2 px-5 rounded-lg shadow-md text-sm">
+                    Get Started
+                </a>
+            </div>
+
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#about" class="block py-2 transition duration-200">About</a>
+            <a href="#importance" class="block py-2 transition duration-200">Importance</a>
+            <a href="#stats" class="block py-2 transition duration-200">Stats</a>
+            <a href="#how-it-works" class="block py-2 transition duration-200">How It Works</a>
+            <a href="#contact" class="block py-2 transition duration-200">Contact</a>
+            <a href="#contact" class="mt-2 block cta-button cta-button-primary text-white font-semibold py-2 px-5 rounded-lg shadow-md text-center">
+                Get Started
+            </a>
+        </div>
+    </header>
+
+    <section id="hero-section" class="py-24 md:py-40 relative overflow-hidden">
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight fade-in-up">
+                Become an <span class="text-pink-accent">Ethical Driver</span>
+            </h1>
+            <p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto fade-in-up delay-100">
+                The BED Test: Your virtual experience to build ethical driving habits and handle road rage, taken before you get your license.
+            </p>
+            <a href="#about" class="cta-button cta-button-primary inline-block font-bold py-4 px-10 rounded-lg shadow-xl hover:shadow-2xl transition duration-300 fade-in-up delay-200 text-lg">
+                Discover More
+            </a>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 md:py-28">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 md:mb-20 fade-in-up">
+                <h2 class="section-title text-3xl md:text-4xl font-bold mb-4">What is the BED Test?</h2>
+                <p class="section-intro-text max-w-2xl mx-auto text-lg">
+                    The Build an Ethical Driver (BED) Test is a pioneering virtual assessment focused on training individuals
+                    to effectively deal with road rage and develop responsible driving behaviors.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="feature-card p-8 rounded-xl shadow-lg scale-in">
+                    <div class="icon-container mb-5 flex justify-center">
+                        <svg class="w-14 h-14" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-center">Realistic Scenarios</h3>
+                    <p class="text-center">
+                        Experience common road rage situations in a safe, virtual environment.
+                    </p>
+                </div>
+                <div class="feature-card p-8 rounded-xl shadow-lg scale-in delay-100">
+                    <div class="icon-container mb-5 flex justify-center">
+                        <svg class="w-14 h-14" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-center">Skill Development</h3>
+                    <p class="text-center">
+                        Learn and practice effective techniques for de-escalating and avoiding road rage.
+                    </p>
+                </div>
+                <div class="feature-card p-8 rounded-xl shadow-lg scale-in delay-200">
+                    <div class="icon-container mb-5 flex justify-center">
+                        <svg class="w-14 h-14" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-center">Pre-License Preparation</h3>
+                    <p class="text-center">
+                        Gain crucial emotional intelligence and conflict resolution skills before hitting the road.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="importance" class="py-20 md:py-28">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="graphic-box rounded-xl p-6 md:p-10 shadow-lg relative z-10">
+                    <span class="text-4xl md:text-5xl font-bold block mb-4">Why Does It Matter?</span>
+                    <p class="text-lg mb-6">
+                        Road rage is a significant factor in accidents and unsafe driving environments. The BED Test is crucial for:
+                    </p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Increasing Safety:</strong> Reducing aggressive behaviors that lead to accidents.</li>
+                        <li><strong>Promoting Calm:</strong> Equipping drivers with strategies to remain calm under pressure.</li>
+                        <li><strong>Building Confidence:</strong> Preparing new drivers for challenging on-road interactions.</li>
+                        <li><strong>Creating Responsible Drivers:</strong> Fostering a culture of ethical and considerate driving.</li>
+                    </ul>
+                </div>
+                
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="stats" class="py-20 md:py-28">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="section-title text-3xl md:text-4xl font-bold mb-16 fade-in-up">Key Stats</h2>
+            <div class="grid md:grid-cols-3 gap-12 text-lg">
+                <div class="scale-in">
+                    <span class="counter-value text-4xl md:text-5xl">50+</span><br>
+                    <span>Simulated Road Rage Scenarios</span>
+                </div>
+                <div class="scale-in delay-200">
+                    <span class="counter-value text-4xl md:text-5xl">95%</span><br>
+                    <span>Participant Improvement in Handling Aggression</span>
+                </div>
+                <div class="scale-in delay-400">
+                    <span class="counter-value text-4xl md:text-5xl">1000+</span><br>
+                    <span>Future Ethical Drivers Trained</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="py-20 md:py-28">
+        <div class="container mx-auto px-6">
+            <h2 class="section-title text-3xl md:text-4xl font-bold mb-16 text-center fade-in-up">How It Works</h2>
+            <div class="relative">
+                <div id="connector-line" class="absolute top-1/2 left-0 right-0 h-1 bg-pink-500 transform -translate-y-1/2 z-0"></div>
+                <div class="grid md:grid-cols-3 gap-12 relative z-10">
+                    <div class="text-center scale-in">
+                        <div class="step-icon-wrapper w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4">
+                            <svg class="step-icon w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.684V18m0-1.332a4 4 0 01-4-4V7.316a4 4 0 014-4 4 4 0 014 4v6.684a4 4 0 01-4 4z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Virtual Scenario Simulation</h3>
+                        <p class="text-lg">
+                            Engage in realistic driving scenarios designed to provoke road rage responses.
+                        </p>
+                    </div>
+                    <div class="text-center scale-in delay-200">
+                        <div class="step-icon-wrapper w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4">
+                            <svg class="step-icon w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-9-9v4m8-4v4M3 17h18a2 2 0 002-2v-5a2 2 0 00-2-2H3a2 2 0 00-2 2v5a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Emotional Response Training</h3>
+                        <p class="text-lg">
+                            Learn to recognize and manage your emotional reactions in stressful driving situations.
+                        </p>
+                    </div>
+                    <div class="text-center scale-in delay-400">
+                        <div class="step-icon-wrapper w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-4">
+                            <svg class="step-icon w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Post-Test Feedback</h3>
+                        <p class="text-lg">
+                            Receive detailed feedback on your performance and guidance for improvement.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 md:py-28">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8">Get Started with BED</h2>
+            <p class="text-lg max-w-3xl mx-auto mb-12">
+                Ready to become a more ethical and responsible driver? Contact us to learn how the BED Test can prepare you for your license.
+            </p>
+            <a href="mailto:contact@ethicaldriver.com" class="cta-button cta-button-secondary font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition duration-300 text-lg">
+                Contact Us
+            </a>
+        </div>
+    </section>
+
+    <footer class="py-8 md:py-12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex justify-center items-center mb-4">
+                <a href="#" class="text-2xl font-bold tracking-tight mr-2">
+                    <span id="footer-logo-main">BED</span><span id="footer-logo-secondary">Test</span>
+                </a>
+            </div>
+            <nav class="mb-6">
+                <a href="#about" class="nav-link transition duration-200 font-medium mr-6">About</a>
+                <a href="#importance" class="nav-link transition duration-200 font-medium mr-6">Importance</a>
+                <a href="#stats" class="nav-link transition duration-200 font-medium mr-6">Stats</a>
+                <a href="#how-it-works" class="nav-link transition duration-200 font-medium mr-6">How It Works</a>
+                <a href="#contact" class="nav-link transition duration-200 font-medium">Contact</a>
+            </nav>
+            <p class="copyright-text text-sm mb-2">© 2023 BED Test. All rights reserved.</p>
+            <p class="tagline-text text-xs">A project for responsible driving.</p>
+        </div>
+    </footer>
+
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const ctaButtons = document.querySelectorAll('.cta-button');
+        const animatedElements = document.querySelectorAll('.fade-in-up, .scale-in');
+        const counterElements = document.querySelectorAll('.counter-value');
+        const connectorLine = document.getElementById('connector-line');
+        const stepIcons = document.querySelectorAll('.step-icon');
+        const sectionTitles = document.querySelectorAll('.section-title');
+
+        // Toggle mobile menu visibility
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu when a link is clicked
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+        }
+
+        // Check if element is in viewport
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        // Animate elements on scroll
+        function animateOnScroll() {
+            animatedElements.forEach(el => {
+                if (isElementInViewport(el)) {
+                    el.classList.add('is-visible');
+                }
+            });
+
+            // Animate connector line
+            if (connectorLine && isElementInViewport(connectorLine)) {
+                connectorLine.classList.add('is-visible');
+            }
+
+            // Animate step icons
+            stepIcons.forEach(icon => {
+                if (isElementInViewport(icon.parentElement)) {
+                    icon.classList.add('is-visible');
+                }
+            });
+
+            // Animate section titles
+            sectionTitles.forEach(title => {
+                if (isElementInViewport(title)) {
+                    title.classList.add('is-visible');
+                }
+            });
+        }
+
+        // Counter animation
+        let animationStarted = false;
+        function startCounterAnimation() {
+            if (!animationStarted) {
+                counterElements.forEach(el => {
+                    if (isElementInViewport(el)) {
+                        let target = parseInt(el.textContent.replace('+', ''));
+                        let start = 0;
+                        let duration = 2000; // Animation duration in ms
+                        let increment = Math.ceil(target / (duration / 16)); // Calculate increment based on ~60fps
+                        let timer = setInterval(() => {
+                            start += increment;
+                            if (start > target) {
+                                start = target;
+                                clearInterval(timer);
+                            }
+                            el.textContent = start + '+';
+                        }, 16); // Update roughly every 16ms (60fps)
+                        animationStarted = true; // Ensure animation only starts once
+                    }
+                });
+            }
+        }
+
+        // Event listeners for scroll and initial load
+        window.addEventListener('scroll', () => {
+            animateOnScroll();
+            startCounterAnimation();
+        });
+
+        // Run animations on initial load
+        animateOnScroll();
+        startCounterAnimation();
+
+        // Header scroll effect
+        const header = document.getElementById('main-header');
+        if (header) {
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > 80) { // Add 'scrolled' class after scrolling down 80px
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }, {
+                passive: true
+            }); // Use passive listener for better scroll performance
+        }
+    </script>
 </body>
+
 </html>
